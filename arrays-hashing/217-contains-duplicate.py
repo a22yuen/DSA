@@ -12,7 +12,7 @@
 #   Output: true
 # -----------------------------------------------------------
 
-# Hash Table
+# Hash Set
 class Solution(object):
     def containsDuplicate(self, nums):
         """
