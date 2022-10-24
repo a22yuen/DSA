@@ -8,3 +8,7 @@ Feel free to sugguest more optimized solutions :D
 - [Grind 75](https://www.techinterviewhandbook.org/grind75)
 - [Neetcode 150](https://neetcode.io/practice)
 - [Alphabet 150](https://alphabet150.com/)
+
+## To revisit
+
+- [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
