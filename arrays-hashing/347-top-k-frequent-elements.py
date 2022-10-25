@@ -23,3 +23,29 @@ class Solution(object):
         s = sorted(count, key=count.__getitem__, reverse=True)
         # return first k elements
         return s[:k]
+
+
+# Less than O(nlogn)
+
+# Heap
+# get counter of all numbers -> insert into heap -> return first k elements
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        if k == len(nums):
+            return nums
+
+        count = collections.Counter(nums)
+        h = [(-v, key) for key, v in count.items()]
+        heapq.heapify(h)
+        r = []
+        for i in range(k):
+            v, key = heapq.heappop(h)
+            r.append(key)
+        return r
+
+# bucket sort (idk)
