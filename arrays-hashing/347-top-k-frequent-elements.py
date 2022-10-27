@@ -10,6 +10,7 @@
 # -----------------------------------------------------------
 
 # i love python syntax
+# O(nlogn)
 class Solution(object):
     def topKFrequent(self, nums, k):
         """
@@ -17,10 +18,10 @@ class Solution(object):
         :type k: int
         :rtype: List[int]
         """
-        # dictionary to count number of each element
         count = collections.Counter(nums)
         # sort dictionary in descending order by value
-        s = sorted(count, key=count.__getitem__, reverse=True)
+        s = [key for key, v in sorted(
+            count.items(), key=lambda item: item[1], reverse=True)]
         # return first k elements
         return s[:k]
 
@@ -28,7 +29,8 @@ class Solution(object):
 # Less than O(nlogn)
 
 # Heap
-# get counter of all numbers -> insert into heap -> return first k elements
+# get counter of all numbers -> heapify -> return first k elements
+# O(n + log(h) + klog(n)) where h is number of distinct elements in nums, h < n
 class Solution(object):
     def topKFrequent(self, nums, k):
         """
@@ -47,5 +49,23 @@ class Solution(object):
             v, key = heapq.heappop(h)
             r.append(key)
         return r
+
+
+# We want k size heap. Push k times, then pushpop n-k elements. This gives klogk + (n-k)logk = O(nlogk)
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        if k == len(nums):
+            return nums
+
+        count = collections.Counter(nums)
+        h = []
+        counter = 0
+        for key, v in count.items():
+            if counter != k:
+                heapq.heappush(h, (v, key))
+                counter += 1
+            else:
+                print(heapq.heappushpop(h, (v, key)))
+        return [key for v, key in h]
 
 # bucket sort (idk)
