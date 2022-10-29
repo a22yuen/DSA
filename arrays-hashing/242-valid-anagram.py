@@ -10,7 +10,8 @@
 #   Output: false
 # -----------------------------------------------------------
 
-# 2 hash tables
+import collections
+# 1 hash table
 class Solution(object):
     def isAnagram(self, s, t):
         """
@@ -30,7 +31,15 @@ class Solution(object):
             else:
                 d[x] = d[x]-1
 
-        for k, v in d.items():
+        for v in d.values():
             if v is not 0:
                 return False
         return True
+
+# Better 2 Hash tables :DDDD
+def anagram(s,t):
+    sc = collections.Counter(s)
+    tc = collections.Counter(t)
+    return sc == tc
+
+# This can be done with one hash table by subtracting each

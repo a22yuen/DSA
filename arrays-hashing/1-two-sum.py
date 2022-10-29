@@ -18,11 +18,6 @@
 # Hash table to keep track of difference between element and target
 class Solution(object):
     def twoSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
-        """
         d = {}
         for i, x in enumerate(nums):
             diff = target - x

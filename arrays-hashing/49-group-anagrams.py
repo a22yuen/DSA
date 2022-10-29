@@ -13,14 +13,13 @@
 #   Output: [["a"]]
 # -----------------------------------------------------------
 
+
+import collections
+
 # Solution 1: Dict to count characters, then compare with other words and add to arrays
 #   Thoughts: Not ideal since used space from extra arrays.
 class Solution(object):
     def groupAnagrams(self, strs):
-        """
-        :type strs: List[str]
-        :rtype: List[List[str]]
-        """
         ds = []
         w = []
         skip = False
@@ -77,3 +76,12 @@ class Solution(object):
             t = tuple(count)
             c[t].append(s)
         return c.values()
+
+# Quick solution
+def ga(strs):
+    d = collections.defaultdict(list)
+    for x in strs:
+        d[tuple(sorted(x))].append(x)
+    return d.values()
+
+print(ga(["eat","tea","tan","ate","nat","bat"]))
