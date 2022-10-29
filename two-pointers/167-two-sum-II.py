@@ -17,6 +17,15 @@
 #   Output: [1,2]
 #   Explanation: The sum of -1 and 0 is -1. Therefore index1 = 1, index2 = 2. We return [1, 2].
 # -----------------------------------------------------------
+from typing import List
+# 2 pointers start and end, and they work closer towards the center over time
 class Solution:
-    def twoSum(self, numbers: List[int], target: int) -> List[int]:
-        pass
+    def twoSum2(self, numbers: List[int], target: int) -> List[int]:
+        l = 0
+        r = len(numbers)-1
+        while numbers[l] + numbers[r] != target:
+            if numbers[l] + numbers[r] < target:
+                l += 1
+            else:
+                r -= 1
+        return [l+1, r+1]
