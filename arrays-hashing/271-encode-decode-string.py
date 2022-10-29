@@ -21,18 +21,47 @@
 # 	Output: [""]
 # -----------------------------------------------------------
 
+# Separate words by using character not part of the accepted characters
 class Codec:
-    def encode(self, strs: List[str]) -> str:
-        """Encodes a list of strings to a single string.
-        """
+    def encode(self, strs) -> str:
+        r = ""
+        for x in strs:
+            r += x
+            r += chr(257)
+        return r
+
+    def decode(self, s: str):
+        r = []
+        currs = ""
+        for x in s:
+            if(ord(x) != 257):
+                currs += x
+            else:
+                r.append(currs)
+                currs = ""
+        return r
         
+# Chunking by length
+class Codec2:
+    def encode(self, strs):
+        r = ""
+        for x in strs:
+            l = len(x)
+            r += f'{l:03d}'
+            r += x
+        return r
 
-    def decode(self, s: str) -> List[str]:
-        """Decodes a single string to a list of strings.
-        """
-        
+    def decode(self, s: str):
+        i = 0
+        r = []
+        while i < len(s):
+            l = int(s[i:i+3])
+            i += 3
+            r.append(s[i:i+l])
+            i += l
+        return r
 
 
-# Your Codec object will be instantiated and called as such:
-# codec = Codec()
-# codec.decode(codec.encode(strs))
+
+codec = Codec2()
+print(codec.encode(["Hello","World"]))
