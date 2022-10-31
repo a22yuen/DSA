@@ -22,5 +22,26 @@
 #   Explanation: The only possible triplet sums up to 0.
 # -----------------------------------------------------------
 class Solution:
+    class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        
+        d = collections.defaultdict(list)
+        r = set()
+        for i, x in enumerate(nums):
+            if len(d[x]) == 3:
+                continue
+            d[x].append(i)
+        print(d.items())
+        for ind1,x in enumerate(nums):
+            if len(d[x]) == 3 and d[x][-1] < ind1:
+                continue
+            for ind2, y in enumerate(nums):
+                if ind2 == ind1:
+                    continue
+                search = -(x + y)
+                if search in d:
+                    for ind3 in d[search]:
+                        if ind3 != ind2 and ind3 != ind1:
+                            r.add(tuple(sorted([x,y,search])))
+                            break
+        return r
+    
