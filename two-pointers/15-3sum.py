@@ -21,8 +21,9 @@
 #   Output: [[0,0,0]]
 #   Explanation: The only possible triplet sums up to 0.
 # -----------------------------------------------------------
+
+# Monkey Solution
 class Solution:
-    class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         d = collections.defaultdict(list)
         r = set()
@@ -44,4 +45,16 @@ class Solution:
                             r.add(tuple(sorted([x,y,search])))
                             break
         return r
-    
+
+
+# Better solution
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        l = 0
+        r = len(nums)-1
+        search = -(nums[1] + nums[r])
+        if search > nums[r]:
+            r -= 1
+        elif search < nums[l]:
+            
