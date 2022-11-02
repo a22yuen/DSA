@@ -47,14 +47,37 @@ class Solution:
         return r
 
 
-# Better solution
+# 2 sum solution + 1 dimension
 class Solution:
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
-        nums.sort()
+    def twosum(self, nums, target):
         l = 0
         r = len(nums)-1
-        search = -(nums[1] + nums[r])
-        if search > nums[r]:
-            r -= 1
-        elif search < nums[l]:
+        ret = []
+        while l < r:
+            if nums[l] + nums[r] < target:
+                l += 1
+            elif nums[l] + nums[r] > target:
+                r -= 1
+            else:
+                ret.append([-target, nums[l], nums[r]])
+                r -= 1
+                l += 1
+                while l < r and nums[l] == nums[l-1]:
+                    l += 1
+        return ret if len(ret) > 0 else None
+                
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        ret = []
+        i = 0
+        while i < len(nums):
+            if i > 0:
+                if nums[i-1] == nums[i]:
+                    i += 1
+                    continue
+            ts = self.twosum(nums[i+1:], -(nums[i]))
+            if ts:
+                ret += ts
+            i += 1
+        return ret
             
