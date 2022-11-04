@@ -11,7 +11,9 @@
 # -----------------------------------------------------------
 
 # Initial Solution
-# Doesn't account for buckets inside buckets
+# V1: Doesn't account for buckets inside buckets
+# V2: accounts for buckets in buckets, but O(n^2) when going back to tally heights
+# need to keep track while going down list
 class Solution:
     def trap(self, height: List[int]) -> int:
         l = 0
@@ -19,7 +21,6 @@ class Solution:
         total = 0
         while r < len(height) and l < len(height)-1:
             # search for first side of bucket
-            print("start left", l)
             if height[l] <= height[l+1]:
                 if l >= len(height)-2:
                     return total
@@ -27,25 +28,27 @@ class Solution:
                 continue
             # search for second side of bucket
             r = l+2
+            poss = -1
             while r < len(height) and height[r] < height[l]:
-                print("find right", r)
+                if height[r-1] < height[r]:
+                    if poss == -1:
+                        poss = r
+                    elif height[poss] < height[r]:
+                        poss = r
                 r += 1
             if r >= len(height):
-                print("cant find")
-                l += 1
-                print("cant", l)
-                r = l
-                continue
-            newl = l
-            newr = r
-            while newl < newr:
-                print("newl", newl)
-                print("newr", newr)
-                diff = newr-newl-1
-                total += diff
-                newl = newl+1
-                newr = newr-1
-                
+                if poss == -1:
+                    l += 1
+                    r = l
+                    continue
+                else:
+                    r = poss
+            mh = min(height[r], height[l])
+            i = l+1
+            while i < r:
+                total += max(0,mh - height[i])
+                i += 1
             l = r
         return total
+            
             

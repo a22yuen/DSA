@@ -22,6 +22,9 @@
 #   Explanation: The only possible triplet sums up to 0.
 # -----------------------------------------------------------
 
+from typing import List
+import collections
+
 # Monkey Solution
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
