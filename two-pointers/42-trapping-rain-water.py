@@ -10,45 +10,53 @@
 #   Output: 9
 # -----------------------------------------------------------
 
+from typing import List
 # Initial Solution
 # V1: Doesn't account for buckets inside buckets
 # V2: accounts for buckets in buckets, but O(n^2) when going back to tally heights
 # need to keep track while going down list
+
+# V3: 2 pointer, O(1) space complexity LETS GOOO
 class Solution:
     def trap(self, height: List[int]) -> int:
         l = 0
         r = 0
         total = 0
-        while r < len(height) and l < len(height)-1:
-            # search for first side of bucket
+        while l < len(height)-1 and r < len(height):
+            # search for start left side of bucket
             if height[l] <= height[l+1]:
-                if l >= len(height)-2:
-                    return total
                 l += 1
                 continue
             # search for second side of bucket
             r = l+2
-            poss = -1
-            while r < len(height) and height[r] < height[l]:
+            while r < len(height):
                 if height[r-1] < height[r]:
-                    if poss == -1:
-                        poss = r
-                    elif height[poss] < height[r]:
-                        poss = r
+                    # we have water!
+                    if height[r-1] > height[l] and height[r] > height[l]:
+                        # both taller than highest, need better highest
+                        l = r
+                        r = l+2
+                        continue
+                    elif height[l] > height[r]:
+                        # not taller than highest
+                        for i in range(r-1, l-1, -1):
+                            if height[i] >= height[r]:
+                                # found leftside bucket
+                                for j in range(i+1, r):
+                                    mh = i if height[i] < height[r] else r
+                                    if height[mh] - height[j] < 0:
+                                        return -2
+                                    total += height[mh] - height[j]
+                                    height[j] = height[mh]
+                                break
+                    elif height[l] <= height[r]:
+                        for i in range(l+1, r):
+                            total += height[l] - height[i]
+                            height[i] = height[l]
+                        l = r
+                        break
+                    else:
+                        print("doom")
+                        return -1
                 r += 1
-            if r >= len(height):
-                if poss == -1:
-                    l += 1
-                    r = l
-                    continue
-                else:
-                    r = poss
-            mh = min(height[r], height[l])
-            i = l+1
-            while i < r:
-                total += max(0,mh - height[i])
-                i += 1
-            l = r
         return total
-            
-            
