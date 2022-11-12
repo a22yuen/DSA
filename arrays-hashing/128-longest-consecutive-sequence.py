@@ -15,20 +15,29 @@
 # O(n) time since the while loop inside is restricted to the possible elements inside nums, ie at most n runs
 # This gives O(n + n) = O(n)
 class Solution:
-  def longestConsecutive(self, nums) -> int:
-			s = set(nums)
-			highest = 1
-			curn = 0
+	def longestConsecutive(self, nums) -> int:
+	# 1. gather all distinct numbers in nums ( n time )
+	# 2. go down nums and for each character search for the next character constant time for searching set
+	# 3. each number we start searching must necessarily be the start of a chain, else there is a longer chain already that it is a part of. check if previous number exists
+	# 4. no then iterate array, yes then follow 
+		s = set(nums)
+		highest = 0
+		for x in nums:
+			# check if chain starter
+			if x-1 in s:
+				continue
+			# chain start
+			curv = x
 			curs = 1
-			for x in nums:
-				curn = x
-				while curn + 1 in s:
-					curn += 1
+			while curv in s:
+				if curv+1 in s:
+					curv += 1
 					curs += 1
-				if highest < curs:
-					highest = curs
-				curs = 1
-			return highest
+				else:
+					break
+			if curs > highest:
+				highest = curs
+		return highest
 
 x = Solution()
 print(x.longestConsecutive([100,4,200,1,3,2]))
