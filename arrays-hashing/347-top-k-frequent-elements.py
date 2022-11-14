@@ -9,6 +9,29 @@
 #   Output: [1]
 # -----------------------------------------------------------
 
+# Optimal Solution
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # Counter of frequency in array
+        # We want a heap that will contain the k most frequent elements
+        # To do this, we want a min heap of k size
+        # We push k elements onto heap k logn
+        # Then push pop n-k elements onto heap, removing the smallest value if there is a bigger one
+        #   pushpop is faster than push and pop, logn vs 2logn
+        # Return heap
+        count = collections.Counter(nums)
+        h = []
+        newk = 0
+        for key,v in count.items():
+            if newk < k:
+                heappush(h, (v,key))
+                newk += 1
+            else:
+                if v > h[0][0]:
+                    heappushpop(h, (v,key))
+        r = [key for v,key in h]
+        return r
+
 # i love python syntax
 # O(nlogn)
 class Solution(object):
@@ -49,23 +72,3 @@ class Solution(object):
             v, key = heapq.heappop(h)
             r.append(key)
         return r
-
-
-# We want k size heap. Push k times, then pushpop n-k elements. This gives klogk + (n-k)logk = O(nlogk)
-class Solution:
-    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        if k == len(nums):
-            return nums
-
-        count = collections.Counter(nums)
-        h = []
-        counter = 0
-        for key, v in count.items():
-            if counter != k:
-                heapq.heappush(h, (v, key))
-                counter += 1
-            else:
-                print(heapq.heappushpop(h, (v, key)))
-        return [key for v, key in h]
-
-# bucket sort (idk)
