@@ -13,3 +13,24 @@
 # Output: 0
 # Explanation: In this case, no transactions are done and the max profit = 0.
 # -----------------------------------------------------------
+from typing import List
+
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        # we want to track windows of time, from a low point to a high point
+        # from start price onwards, we could be making profit
+        # but if the end price is less than the start price, we could be making more profit starting from the end date
+        # thus new start date is end date, and we continue from there
+        start = 0
+        end = 1
+        highest = 0
+        while end < len(prices):
+            if prices[start] >= prices[end]:
+                start = end
+                end = start+1
+                continue
+            else:
+                highest = max(highest, prices[end]-prices[start])
+                end += 1
+        return highest
