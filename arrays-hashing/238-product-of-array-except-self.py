@@ -23,23 +23,27 @@ def lrarr(nums):
     rev = [x for x in reversed(nums)]
     for i in range(len(nums)-1):
         r.append(rev[i] * r[i])
-    ret=[]
+    ret = []
     rev = [x for x in reversed(r)]
     for i in range(len(nums)):
         ret.append(l[i] * rev[i])
     return ret
 
-# O(1) space complexity
-# make left pass accumulated product array in r. Go backwards and multiply by v, where v is the accumulated product of the right pass
-# using variables to store state if you only need the state at a given time
+
+# O(1) Space complexity, O(n) time complexity
 class Solution:
-    def productExceptSelf(self, nums):
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # Each value in the resultant array is made of a products of all values at indexes < i, and product of values of index > i
+        # Thus we can split our values into 2 different variables, left product and right product
+        # Calculate left product by collecting the accumulative product from the left
+        # We do the same for the right, by keeping an accumulative product from the right as a variable
         r = [1]
         for i in range(1, len(nums)):
-            r.append(r[i-1]*nums[i-1])
-
-        v = 1
-        for i in range(len(nums)-1, -1, -1):
-            r[i] *= v
-            v *= nums[i]
+            # left side products
+            r.append(nums[i-1] * r[i-1])
+        rhs = 1
+        for i in range(len(nums)-2, -1, -1):
+            # accumuate rhs and multiply into r
+            rhs *= nums[i+1]
+            r[i] *= rhs
         return r
