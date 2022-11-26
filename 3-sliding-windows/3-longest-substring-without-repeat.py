@@ -16,6 +16,9 @@
 #   Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
 # -----------------------------------------------------------
 
+import collections
+
+
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         # Hash set to keep track of viewed values
@@ -39,4 +42,26 @@ class Solution:
                 highest = max(highest, end-start)
         return highest
 
+
 # SUPER OPTIMAL SOLUTION WITH SAVING INDEX
+
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # When traversing unique character substring, when reaching a character already in substring,
+        # the new substring you track must start after the first repeated character.
+        # This can be done by jumping to index after the first repeated character.
+        # Keep track of indices of visited characters
+        # left goes to index after first instance of repeated character within the substring
+        d = {}
+        left, right, highest, curr = 0, 0, 0, 0
+        while right < len(s):
+            if s[right] not in d:
+                d[s[right]] = right
+                right += 1
+            else:
+                left = max(left, d[s[right]] + 1)
+                d[s[right]] = right
+                right += 1
+            highest = max(highest, right-left)
+        return highest
