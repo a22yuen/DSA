@@ -11,3 +11,23 @@
 #  Output: false
 # -----------------------------------------------------------
 from typing import List
+import collections
+
+# SLiding window size of s1
+
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        d = collections.Counter(s1)
+        left, right = 0, len(s1)-1
+        s = s2[left:right+1]
+        w = collections.Counter(s)
+        while right < len(s2):
+            if d == w:
+                return True
+            w[s2[left]] -= 1
+            right += 1
+            if right < len(s2):
+                w[s2[right]] += 1
+            left += 1
+        return False
