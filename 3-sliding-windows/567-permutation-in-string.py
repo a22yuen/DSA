@@ -14,6 +14,10 @@ from typing import List
 import collections
 
 # SLiding window size of s1
+# Can be made faster with array
+
+# Get counter of s1 and compare with substring of equal length in s2
+# Update s2 substring counter by changing count with left and right index to save time with sliding window
 
 
 class Solution:
