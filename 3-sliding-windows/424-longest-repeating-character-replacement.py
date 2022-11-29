@@ -13,6 +13,7 @@
 #   The substring "BBBB" has the longest repeating letters, which is 4.
 # -----------------------------------------------------------
 from typing import List
+import collections
 
 # Inital Solution
 # O(mn) time where m is the number of unique characters and n is the length of the string
@@ -61,3 +62,23 @@ class Solution:
                             end += 1
             highest = max(highest, end-start)
         return highest
+
+
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        # Use the size of the window to track the longest substring
+        # We want to shows if there are more characters in the substring after k replacements than the highest frequency char.
+        # These additional characters are different than the highest frequency char, so the substring is not valid
+        # We expand the window if the size of the window with replacements is <= current important char, else don't expand and shift forward
+        freq = collections.defaultdict(int)
+        left, right, highest = 0, 0, 0
+        while right < len(s):
+            freq[s[right]] += 1
+            highest = s[right] if freq[s[right]] > freq[highest] else highest
+            if (right - left) + 1 - k <= freq[highest]:
+                right += 1
+            else:
+                right += 1
+                freq[s[left]] -= 1
+                left += 1
+        return right - left
