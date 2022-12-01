@@ -35,3 +35,45 @@ class Solution:
                 w[s2[right]] += 1
             left += 1
         return False
+
+# Optimal Solution, tracking matches
+# O(n) time vs O(26n) time
+# add and subtract the matches for each shift to save time
+
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        if len(s1) > len(s2):
+            return False
+        left, right = 0, len(s1)-1
+        d = [0] * 26
+        w = [0] * 26
+        for i, x in enumerate(s1):
+            d[ord(x) - ord('a')] += 1
+            w[ord(s2[i]) - ord('a')] += 1
+        matches = 0
+        for i in range(26):
+            if d[i] == w[i]:
+                matches += 1
+        while right < len(s2):
+            li = ord(s2[left]) - ord('a')
+            ri = 0
+            if matches == 26:
+                return True
+            w[li] -= 1
+            if w[li] == d[li]:
+                matches += 1
+            elif w[li] + 1 == d[li]:
+                matches -= 1
+            left += 1
+            right += 1
+            if right < len(s2):
+                ri = ord(s2[right]) - ord('a')
+                w[ri] += 1
+            else:
+                break
+            if w[ri] == d[ri]:
+                matches += 1
+            elif w[ri] - 1 == d[ri]:
+                matches -= 1
+        return False
