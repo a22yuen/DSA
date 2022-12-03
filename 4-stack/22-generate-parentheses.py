@@ -1,19 +1,30 @@
 from typing import List
 
-def generateParenthesis(n: int) -> List[str]: 
-        def r(ret, arr, n, s):
-            if n == 0 and arr == 0:
-                ret.append(s)
-            else:
-                if n > 0:
-                    arr += 1
-                    r(ret, arr, n-1, s + "(")
-                if arr > 0:
-                    r(ret, arr-1, n, s + ")")
-        arr = 1
-        ret = []
-        r(ret, arr, n-1, "")
-        return ret
 
-print("hi")
-print(generateParenthesis(2))
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        # Recursively run down each option of either adding ) or (, keeping track of both numbers
+        # use backtracking by adding and removing what you added after each recursive call to reuse stack and save time
+        # global return array to save time.
+        ret = []
+
+        def r(cl, op, s):
+            # no more (), return
+            if op == 0:
+                s.append(')' * cl)
+                ret.append("".join(s))
+                s.pop()
+            else:
+                # still some open
+                s.append("(")
+                r(cl+1, op-1, s)
+                s.pop()
+                if cl > 0:
+                    s.append(")")
+                    r(cl-1, op, s)
+                    s.pop()
+        cl = 0
+        op = n
+        st = []
+        r(cl, op, st)
+        return ret
